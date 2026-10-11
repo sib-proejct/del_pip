@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<title>PiP 속성 제거 검증</title>
+<style>body{font:16px system-ui;max-width:850px;margin:40px auto;padding:0 20px}button{padding:10px;margin:4px}pre{background:#eee;padding:16px}video{width:160px;background:#222}</style>
+<h1>PiP 속성 제거 검증</h1>
+<p>확장 프로그램을 클릭한 다음 상태를 확인하세요. 재설정과 동영상 추가 후에도 제한 속성이 없어야 합니다. 이 페이지는 속성 검증용이며 재생할 영상은 포함하지 않습니다.</p>
+<button id="reset">속성 다시 설정</button>
+<button id="add">동영상 추가</button>
+<button id="shadow">늦게 열린 Shadow DOM 추가</button>
+<button id="check">상태 확인</button>
+<div id="videos"><video disablepictureinpicture></video><video disablepictureinpicture></video></div>
+<div id="host"></div>
+<iframe title="동일 출처 프레임" srcdoc="<video disablepictureinpicture></video>"></iframe>
+<pre id="status"></pre>
+<script>
+const videos = document.querySelector('#videos');
+const host = document.querySelector('#host');
+function allVideos() {
+  return [...document.querySelectorAll('video'), ...(host.shadowRoot?.querySelectorAll('video') || []), ...document.querySelector('iframe').contentDocument.querySelectorAll('video')];
+}
+document.querySelector('#reset').onclick = () => allVideos().forEach(v => v.setAttribute('disablepictureinpicture', ''));
+document.querySelector('#add').onclick = () => {
+  const video = document.createElement('video');
+  video.setAttribute('disablepictureinpicture', '');
+  videos.append(video);
+};
+document.querySelector('#shadow').onclick = () => {
+  if (!host.shadowRoot) host.attachShadow({mode: 'open'}).innerHTML = '<video disablepictureinpicture></video>';
+};
+document.querySelector('#check').onclick = () => {
+  document.querySelector('#status').textContent = allVideos().map((v, i) => `동영상 ${i + 1}: ${v.hasAttribute('disablepictureinpicture') ? '제한 속성 있음' : '제한 속성 없음'}`).join('\n');
+};
+</script>
+</html>

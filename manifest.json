@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "PiP 속성 제거",
+  "version": "1.0.1",
+  "description": "클릭한 페이지의 동영상에서 disablepictureinpicture 속성을 제거합니다.",
+  "permissions": ["activeTab", "scripting"],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_title": "이 페이지의 PiP 제한 속성 제거",
+    "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png" }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
